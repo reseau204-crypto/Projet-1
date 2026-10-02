@@ -842,6 +842,7 @@ main:focus{outline:none}
      §68  Graphiques SVG
      §69  Actions directes depuis le contenu
      §70  Accessibilité : clavier, focus, info-bulles
+     §74  ESPACE « 1 — PILOTAGE DU PROJET » (route #/pilotage, placé avant le routage)
 
    VI. ROUTAGE, ÉVÉNEMENTS, DÉMARRAGE — Routes #/…, rendu, gestion des clics et du clavier, boucle de simulation
      §71  Routage
@@ -6460,7 +6461,7 @@ function cxOptCountsOld(d) { const m = {}; cxScope(d).forEach(([i, s]) => { CXK[
 const cxLabelOf = (d, v) => { const o = CXO[d]().find(x => x[0] === v); return o ? o[1] : v; };
 
 /* ---------- Constructeurs de contenu ---------- */
-const cxLink = (v, a, s) => '#/c/' + v + (a ? '/' + a : '') + (s ? '/' + s : '');
+const cxLink = (v, a, s) => (v === 'pilotage' ? '#/pilotage' : '#/c/' + v) + (a ? '/' + a : '') + (s ? '/' + s : '');
 const cxLg = s => { const [n, sl] = String(s).split('/'); return tvHref(+n, sl); };
 const cxMoreTxt = (k, n) => (k && n > 5 ? `<div class="sm muted" style="padding:8px 14px">+ ${n - 5} ${n - 5 > 1 ? 'autres' : 'autre'} · <a href="${k.href}">voir tout</a></div>` : '');
 function cxT(key, heads, rows, k, none) {
@@ -6532,7 +6533,7 @@ function cxCrumbs(R) {
 const cxTitle = R => { const V = cxView(R.view); return V.label + ' · Cockpit 360° · Communauté IA'; };
 function cxNavHtml(R) {
   const n = humanPending().length;
-  return Object.keys(CXS).map(k => `<a href="${cxLink(k)}" class="${R.k === 'cx' && R.view === k ? 'on' : ''}"${R.k === 'cx' && R.view === k ? ' aria-current="page"' : ''}>${esc(CXS[k].label)}${k === 'problemes' && n ? `<span class="badge">${n}</span>` : ''}</a>`).join('');
+  return ['pilotage'].concat(Object.keys(CXS).filter(k => k !== 'pilotage')).filter(k => CXS[k]).map(k => `<a href="${cxLink(k)}" class="${R.k === 'cx' && R.view === k ? 'on' : ''}"${R.k === 'cx' && R.view === k ? ' aria-current="page"' : ''}>${esc(CXS[k].label)}${k === 'problemes' && n ? `<span class="badge">${n}</span>` : ''}</a>`).join('');
 }
 function cxToolsHtml(R) {
   const on = { objectives: 'objectives', objective: 'objectives', objectiveAgents: 'objectives', objectiveWorkflows: 'objectives', agents: 'agents', agent: 'agents', agentObjectives: 'agents', agentWorkflows: 'agents', wfl: 'wf', wf: 'wf', workflowAgents: 'wf', workflowObjective: 'wf', step: 'wf', task: 'wf', action: 'journal', proof: 'proofs' }[R.k] || R.k, n = humanPending().length;
@@ -6569,7 +6570,7 @@ function cxMain(V, c) {
 function vCx(R) {
   if (R.ctx != null && R.ctx !== cxCtxStr()) { cxSetStr(R.ctx); cxSave(); }
   const V = cxView(R.view), c = cxCtx(), eff = cxEffects(c), total = zAllStepsFlat().length, A = R.aspect && V.aspects.find(x => x.id === R.aspect), S = A && R.sub && A.subs.find(x => x.id === R.sub);
-  const dimIco = { projet: '◎', objectif: '◈', agent: '✦', workflow: '⛓', travail: '▤', problemes: '⚖', resultats: '✓' }[V.k];
+  const dimIco = { projet: '◎', objectif: '◈', agent: '✦', workflow: '⛓', travail: '▤', problemes: '⚖', resultats: '✓', pilotage: '➤' }[V.k];
   const head = `<header class="card cx-head"><span class="tv-ico" aria-hidden="true">${dimIco}</span><div><div class="sm muted">Qu’est-ce que je veux comprendre ?</div><h1>${esc(V.label)}</h1><p class="muted" style="margin-top:2px">${esc(V.q)}</p></div><div class="cx-scope" role="group" aria-label="Taille du contexte"><span class="chip">${cxPl(c.objs.length, 'objectif')}</span><span class="chip">${cxPl(c.wfs.length, 'workflow')}</span><span class="chip" title="Étapes dans le contexte sur le total du projet">${c.steps.length} / ${total} étapes</span><span class="chip">${cxPl(c.agents.length, 'agent')}</span><span class="chip ${c.problems.length ? 'warn' : ''}">${cxPl(c.problems.length, 'problème')}</span></div></header>`;
   const ctx = `<section class="cx-ctx" aria-label="Contexte croisé"><div class="cx-ctxh"><button class="btn sm" data-act="cx-toggle" aria-expanded="${CX.open}" aria-controls="cx-panel">${CX.open ? '▾' : '▸'} Contexte${c.n ? ' · ' + c.n + ' filtre' + (c.n > 1 ? 's' : '') : ' · aucun filtre'}</button><div class="kb-active-scroll" style="flex:1">${cxActiveChips(eff)}${c.n ? '' : '<span class="sm muted">Tout le projet. Ouvrez le contexte pour cibler un agent, un objectif, un workflow…</span>'}</div>${c.n ? '<button class="btn sm" data-act="cx-copy" title="Copier un lien qui rouvre exactement ce contexte">Copier le lien</button><button class="btn sm" data-act="cx-reset">Réinitialiser</button>' : ''}</div>${CX.open ? `<div class="kb-filter-panel" id="cx-panel">${cxCtxPanel(V)}</div><p class="sm muted" style="margin:6px 2px 0">Dans une ligne, plusieurs choix s’additionnent (ou) ; entre les lignes, tous les filtres s’appliquent (et). Un bouton en pointillés n’aurait aucun résultat avec le contexte actuel. Le projet n’en compte qu’un ; ses quatre programmes servent de sous-ensembles. Clavier : ← → dans une ligne, ↑ ↓ pour changer de ligne, Entrée ou Espace pour choisir.</p>` : ''}</section>`;
   const relax = Object.entries(eff).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]);
@@ -7484,6 +7485,41 @@ window.addEventListener('scroll', () => { if (TIP.el) tipHide(); }, { passive: t
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && TIP.el) tipHide(); });
 
 
+/* ======================================================================
+   §74 · ESPACE « 1 — PILOTAGE DU PROJET »
+   But : faire avancer le projet. Quatre questions : où en sommes-nous,
+   qui fait quoi, qu’est-ce qui bloque, que faut-il faire ensuite.
+   Aucune donnée nouvelle : chaque sous-vue réutilise, au moment de
+   l’affichage, la sous-vue existante du cockpit 360° (avec ses graphiques
+   et ses actions directes) et les filtres de contexte s’y appliquent.
+   Route : #/pilotage/<aspect>/<sous-vue>
+   ====================================================================== */
+const cxDeleg = (id, label, v, a, s) => { const S = Sx(id, label, (c, k) => cxFind(v, a, s).fn(c, k), cxFind(v, a, s).lg); return S; };
+CXS.pilotage = {
+  k: 'pilotage', label: '1 — Pilotage du projet', dim: 'pj', q: 'Où en sommes-nous, qui fait quoi, qu’est-ce qui bloque, que faut-il faire ensuite ?', entLabel: 'Les objectifs du contexte',
+  tiles: c => [tile('Avancement', cxAvgP(c) + '<small> %</small>', c.objs.length + ' objectif(s) · ' + c.wfs.length + ' workflow(s)'),
+    tile('Agents mobilisés', c.agents.length, cxLive(c).length + ' workflow(s) actif(s)'),
+    tile('Blocages', cxKind(c, 'blocage').length, cxKind(c, 'blocage').length ? 'à lever' : 'aucun', cxKind(c, 'blocage').length ? 'bad' : 'ok'),
+    tile('Décisions en attente', cxPend(c).length, '', cxPend(c).length ? 'hum' : 'ok'),
+    tile('KPI à la cible', cxKo(c).filter(x => x.ok).length + '<small> / ' + cxKo(c).filter(x => x.ok != null).length + '</small>', cxKo(c).filter(x => x.sig).length + ' écart(s) significatif(s)'),
+    tile('Preuves scellées', c.proofs.filter(p => p.sealed).length + '<small> / ' + c.proofs.length + '</small>')],
+  ent: c => T('pi', cxHObj, cxRObj(c), null),
+  aspects: [
+    Ax('ou', 'Où en sommes-nous ?', c => `${cxAvgP(c)} % d’avancement · ${c.objs.length} objectif(s) · ${cxKo(c).filter(x => x.ok).length}/${cxKo(c).length} cibles KPI atteintes`, [
+      cxDeleg('projet', 'Projet', 'projet', 'execution', 'avancement'), cxDeleg('objectifs', 'Objectifs', 'projet', 'direction', 'objectifs'),
+      cxDeleg('planning', 'Planning', 'projet', 'execution', 'planning'), cxDeleg('kpi', 'KPI', 'projet', 'resultats', 'kpi')]),
+    Ax('qui', 'Qui fait quoi ?', c => `${c.agents.length} agent(s) · ${cxLive(c).length} workflow(s) actif(s) · ${c.tasks.length} tâche(s)`, [
+      cxDeleg('agents', 'Agents IA', 'projet', 'execution', 'responsabilites'), cxDeleg('workflows', 'Workflows', 'projet', 'execution', 'workflows'),
+      cxDeleg('taches', 'Tâches', 'agent', 'travail', 'taches')]),
+    Ax('bloque', 'Qu’est-ce qui bloque ?', c => `${cxKind(c, 'blocage').length} blocage(s) · ${cxPend(c).length} décision(s) en attente · ${c.proofs.length} preuve(s)`, [
+      cxDeleg('blocages', 'Blocages', 'projet', 'problemes', 'blocages'), cxDeleg('decisions', 'Décisions', 'projet', 'problemes', 'decisions'),
+      cxDeleg('preuves', 'Preuves', 'projet', 'controle', 'preuves')]),
+    Ax('ensuite', 'Que faut-il faire ensuite ?', c => `${cxRNext(c).length} prochaine(s) action(s), les plus urgentes d’abord`, [
+      cxDeleg('prochaines', 'Prochaines actions', 'projet', 'resultats', 'prochaines')])
+  ]
+};
+CXS.pilotage.vizLabel = 'État des objectifs'; CXS.pilotage.viz = c => CXS.projet.viz(c);
+
 /* ============ §71 · Routage ============ */
 function parseRoute() {
   const p = decodeURIComponent(location.hash.replace(/^#\/?/, '').replace(/\?.*$/, '')).split('/').filter(Boolean);
@@ -7491,6 +7527,7 @@ function parseRoute() {
   if (!r) return { k: 'cx', view: 'projet', aspect: null, sub: null, d: 2, dl: 'Vue + contexte' };
   if (r === 'cockpit') return { k: 'cockpit', d: 1 };
   if (r === 'c') return cxParse(a, b, c);
+  if (r === 'pilotage') return cxParse('pilotage', a, b);
   if (r === 'views') { const cn = +a >= 1 && +a <= TV_CATS.length ? +a : 1; return { k: 'views', cat: cn, view: b || null, d: 3, dl: 'Vue' }; }
   if (r === 'objectives') return { k: 'objectives', d: 2 };
   if (r === 'agents') return { k: 'agents', d: 2 };

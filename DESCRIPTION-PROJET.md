@@ -1,7 +1,7 @@
 # Cockpit 360° — description du projet
 
-Fichier de référence : `cockpit-360-comprehension-multi-agents-communaute-ia-v3 (1).html` (fichier HTML unique d'environ 1,2 Mo, sans dépendance serveur).
-Ce document décrit l'intention et l'architecture. L'état d'avancement et les tâches restantes sont dans `CLAUDE.md.md`.
+Fichier de référence : `cockpit-360-comprehension-multi-agents-communaute-ia-final.html` (fichier HTML unique d'environ 1,2 Mo, sans dépendance serveur).
+Ce document décrit l'intention et l'architecture. L'état d'avancement et les tâches restantes sont dans `CLAUDE.md`.
 
 ## 1. Idée directrice
 
@@ -88,4 +88,8 @@ Comment un filtre est évalué : pour chaque étape de workflow, `CXK[dimension]
 
 ## 5. Qualité et limites connues
 
-Tests déjà passés (Chromium) : 451 routes à 1440, 820, 390 et 360 px, 55/55 vérifications fonctionnelles, axe-core sans violation WCAG A/AA. Les limites connues et le reste à faire sont dans `CLAUDE.md.md`.
+Tests déjà passés (Chromium) : 451 routes à 1440, 820, 390 et 360 px, 55/55 vérifications fonctionnelles, axe-core sans violation WCAG A/AA. Les limites connues et le reste à faire sont dans `CLAUDE.md`.
+
+## 6. Espace « 1 — Pilotage du projet »
+
+Premier bouton de la navigation (route `#/pilotage/<aspect>/<sous-vue>`, section §74). Il sert à faire avancer le projet et répond à 4 questions : *Où en sommes-nous ?* (Projet, Objectifs, Planning, KPI), *Qui fait quoi ?* (Agents IA, Workflows, Tâches), *Qu'est-ce qui bloque ?* (Blocages, Décisions, Preuves), *Que faut-il faire ensuite ?* (Prochaines actions). Il réutilise les sous-vues existantes du cockpit 360° et les mêmes filtres de contexte.
