@@ -7,7 +7,7 @@
 <meta name="description" content="Carte 3D interactive d'Annecy : bâtiments OpenStreetMap extrudés, lac animé, Thiou et canaux, château, Palais de l'Isle, bateaux, parapentes de la Forclaz et cycle jour/nuit.">
 <style>
 :root{
-  --ink:#f4efe6; --ink2:#c9c2b4; --gold:#ffcf7a; --glass:rgba(14,22,34,.58); --glass2:rgba(14,22,34,.78); --line:rgba(255,255,255,.14);
+  --ink:#f4efe6; --ink2:#c9c2b4; --gold:#ffcf7a; --glass:rgba(14,22,34,.82); --glass2:rgba(14,22,34,.92); --line:rgba(255,255,255,.14);
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --sans:Inter,"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
 }
@@ -15,18 +15,18 @@
 html,body{margin:0;height:100%;background:#0b1320;overflow:hidden;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
 #labels{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.lab{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;white-space:nowrap;transition:opacity .25s;will-change:transform;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.55)}
+.lab{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;white-space:nowrap;transition:opacity .25s;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.55)}
 .lab b{font-weight:600;font-size:12px;letter-spacing:.02em}
 .lab.town b{font-family:var(--serif);font-size:15px;letter-spacing:.06em;font-weight:500;text-transform:uppercase}
 .lab.peak{color:#e8eef7}.lab.peak i{font-style:normal;font-size:9px;line-height:9px;opacity:.9}.lab.peak b{font-size:12px;font-weight:600}.lab.peak u{text-decoration:none;font-size:10.5px;opacity:.75;margin-top:-1px}
 .lab.lm{color:#fff}
-.lab.lm b{background:rgba(12,18,28,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:3px 9px;border-radius:99px;border:1px solid rgba(255,255,255,.2);text-shadow:none}
+.lab.lm b{background:rgba(12,18,28,.8);-webkit-padding:3px 9px;border-radius:99px;border:1px solid rgba(255,255,255,.2);text-shadow:none}
 .lab.lm i{order:2;width:1px;height:12px;background:linear-gradient(#fff,transparent);margin-top:0}
 .lab.lm i::after{content:"";display:block;width:7px;height:7px;border-radius:50%;background:#fff;margin:11px 0 0 -3px;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
 .lab.star b{background:linear-gradient(135deg,rgba(120,80,10,.85),rgba(60,36,6,.85));border-color:rgba(255,207,122,.75);color:#ffe3a8;font-size:13px;padding:4px 11px}
 .lab.star i{background:linear-gradient(var(--gold),transparent)}
 .lab.star i::after{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,122,.35),0 0 14px 3px rgba(255,207,122,.7)}
-.glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.glass{background:var(--glass);-webkit-border:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.35)}
 #brand{position:fixed;left:22px;top:18px;pointer-events:none;text-shadow:0 2px 14px rgba(0,0,0,.55)}
 #brand h1{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,54px);letter-spacing:.14em;text-transform:uppercase;line-height:1}
 #brand p{margin:6px 0 0 3px;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink2)}
